@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 namespace Utils {
   void delay(int milliseconds);
