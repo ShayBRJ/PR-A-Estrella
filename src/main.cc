@@ -49,8 +49,11 @@ void Print2File(std::ofstream& file_out, Maze maze, SIB info_block) {
       }
       else file_out << ' ';
     }
-    file_out << std::endl;
+  file_out << std::endl;
   }
+  file_out << "\n\nCasillas inspeccionadas: " << std::endl;
+  for(auto x : info_block.inspeccionados) file_out << "( " << x->getPoxX() << ", " << x->gePosY() << " ) ";
+  file_out << "\nNúmero de nodos inspeccionados: " << info_block.inspeccionados.size() << std::endl;
   file_out << "\n\nNodos generados:\n";
   for(int i = 0; i < maze.GetM(); i++) {
     for(int j = 0; j < maze.GetN(); j++) {
@@ -62,6 +65,11 @@ void Print2File(std::ofstream& file_out, Maze maze, SIB info_block) {
     }
       file_out << std::endl;
   }
+  file_out << "\n\nCasillas generadas: " << std::endl;
+  for(auto x : info_block.generados) file_out << "( " << x->getPoxX() << ", " << x->gePosY() << " ) ";
+  file_out << "\nNúmero de nodos generados: " << info_block.generados.size() << std::endl;
+
+
   file_out << "\n\nCamino:\n";
   for(int i = 0; i < maze.GetM(); i++) {
     for(int j = 0; j < maze.GetN(); j++) {
@@ -73,9 +81,12 @@ void Print2File(std::ofstream& file_out, Maze maze, SIB info_block) {
     }
       file_out << std::endl;
   }
+  file_out << "\n\nCasillas del camino: " << std::endl;
+  for(auto x : info_block.camino) file_out << "( " << x->getPoxX() << ", " << x->gePosY() << " ) ";
   file_out << "\nCoste: " << info_block.coste << std::endl;
   file_out << "\nFilas(m): " << info_block.size_m  << std::endl;
   file_out << "\nColumnas(n): " << info_block.size_n  << std::endl;
+
 }
 
 
