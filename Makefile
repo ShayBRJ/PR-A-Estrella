@@ -1,10 +1,10 @@
 OBJS	= build/main.o build/Box.o build/Maze.o build/Utils.o
 SOURCE	= src/main.cc src/Box.cc src/Maze.cc src/Utils.cc
 HEADER	= include/Box.hh include/Maze.hh include/Utils.hh
-OUT	= A-Estrella.out
+OUT	= A-Estrella.exe
 CC	 = g++
 FLAGS	 = -g -c -Wall
-LFLAGS	 = 
+LFLAGS	 =
 
 all: $(OBJS)
 	$(CC) -g $(OBJS)  -o $(OUT) $(LFLAGS)
