@@ -1,5 +1,13 @@
 #include "../include/Box.hh"
 
+/**
+ * @brief Constructor de la clase Box
+ * 
+ * @param state Estado de la casilla.
+ * @param pos_x Posición X en la que se encuentra.
+ * @param pos_y Posición Y en la que se encuentra.
+ * @param block_print Bloque identificador que se utilizará cuando se imprima por salida.
+ */
 Box::Box(int state, int pos_x, int pos_y, char block_print) {
   this->State = state;
   this->_posX = pos_x;
@@ -7,6 +15,11 @@ Box::Box(int state, int pos_x, int pos_y, char block_print) {
   this->bloque_print = block_print;
 }
 
+/**
+ * @brief Inicializa las casillas teniendo en cuenta las diferentes casillas que la rodean.
+ * 
+ * @param maze 
+ */
 void Box::Inicialize(Maze maze) {
   int casillas_maze = 0;
   int n = maze.GetN();
@@ -26,7 +39,10 @@ void Box::Inicialize(Maze maze) {
   }
   movement_cost();
 }
-
+/**
+ * @brief Evalua el coste requerido para hacer el salto a la siguiente casilla.
+ * 
+ */
   void Box::movement_cost() {
     for(auto x : this->_boxes) {
       switch (x.first)
@@ -50,14 +66,38 @@ void Box::Inicialize(Maze maze) {
     }
   }
 
+/**
+ * @brief Calcula la f(x) para evaluar el coste final y así hacer el recorrido de menor coste.
+ * 
+ * @param iterator Determina el indice de la casilla a saltar y su coste asociado.
+ * @param child Necesario para evaluar el coste de la casilla más cercana y evaluar si accediendo a ella conseguimos el menor coste.
+ * @return double 
+ */
 double Box::CalculateF(int iterator, Box* child) {
   return child->getHvalue() + this->function_g + this->_cost[iterator];
 }
 
-double Box::FunctionH(Maze maze) {
-  return this->function_h = (std::abs(maze.GetPosEnd().first - this->_posX) + std::abs(maze.GetPosEnd().second - this->_posY)) * 3;
+/**
+ * @brief Función heurística que proporciona un coste aproximado del camino real.
+ * 
+ * @param maze Matriz que representa el laberinto.
+ * @return double 
+ */
+double Box::FunctionH(Maze maze, int opt) {
+  switch (opt)
+  {
+  case 1:
+    return this->function_h = (std::abs(maze.GetPosEnd().first - this->_posX) + std::abs(maze.GetPosEnd().second - this->_posY)) * 3;
+    break;
+  case 2:
+    return this->function_h = std::max(std::abs(maze.GetPosEnd().first - this->_posX), std::abs(maze.GetPosEnd().second - this->_posY)) * 5;
+    break;
+  default:
+    return this->function_h = (std::abs(maze.GetPosEnd().first - this->_posX) + std::abs(maze.GetPosEnd().second - this->_posY)) * 3;
+    break;
+  }
 }
-
+    // A continuación se muestran todos los setters y getters de los atributos de la clase.
     void Box::SetFValue(double value) { this->f_value = value;}
     void Box::SetGValue(double value) { this->function_g = value;}
     double Box::getHvalue() const {return this->function_h;}

@@ -1,3 +1,13 @@
+/**
+ * @file Maze.hh
+ * @author Borja Medina Ramos
+ * @brief Definición de la clase Maze que contendrá las casillas del laberinto
+ * @version 0.1
+ * @date 2023-10-20
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #pragma once
 #include "Box.hh"
 #include "Utils.hh"
@@ -7,7 +17,11 @@
 #include <algorithm>
 
 class Box;
-
+/**
+ * @brief Estructura que recoge la información de la búsqueda para
+ * posteriormente ingrersarla en los ficheros de salida.
+ * 
+ */
 struct SIB //Search Information block
 {
   std::list<Box*> inspeccionados;
@@ -24,15 +38,22 @@ struct SIB //Search Information block
 typedef std::vector<std::vector<Box*>> Boxes;
 typedef std::vector<std::vector<int>> matrix;
 
+
+/**
+ * @brief Estructura de dato que contendrá las casillas y que tendrá el control sobre esta.
+ * Ya sea en la creación como en la modificación de las mismo o búsqueda desde la entrada a 
+ * la salida utilizando la búsqueda A*
+ * 
+ */
 class Maze {
   public:
-    SIB BusquedaAEstrella();
+    SIB BusquedaAEstrella(int opcion);
     Maze(matrix,int, int);
-    int GetM() {return this->_m;}
-    int GetN() {return this->_n;}
-    std::pair<int, int> GetPosStart() { return _pos_start; }
-    std::pair<int, int> GetPosEnd() { return _pos_end; }
-    Boxes GetMaze() const {return this->maze;}
+    int GetM();
+    int GetN();
+    std::pair<int, int> GetPosStart();
+    std::pair<int, int> GetPosEnd();
+    Boxes GetMaze() const;
   private:
     void printMaze(Box*);
     Box* SelectLessCost(std::list<Box*> A);

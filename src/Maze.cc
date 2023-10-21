@@ -1,5 +1,11 @@
 #include "../include/Maze.hh"
-
+/**
+ * @brief Constructor de la clase Maze
+ * 
+ * @param states Indica el estado de las casillas del laberinto
+ * @param m Número de filas
+ * @param n Número de columnas
+ */
 Maze::Maze(matrix states, int m, int n) {
   this->_m = m;
   this->_n = n;
@@ -32,7 +38,12 @@ Maze::Maze(matrix states, int m, int n) {
   }
 }
 
-SIB Maze::BusquedaAEstrella() {
+/**
+ * @brief Realiza la búsqueda A* para encontrar el camino mínimo desde la casilla de inicio hasta la final.
+ * 
+ * @return SIB Bloque de información sobre la búsqueda.
+ */
+SIB Maze::BusquedaAEstrella(int option) {
   std::list<Box*> A;
   std::list<Box*> C;
   SIB sib;
@@ -63,7 +74,7 @@ SIB Maze::BusquedaAEstrella() {
     for(auto x : nodo->GetMap()) {
       if(std::find(C.begin(), C.end(), x.second) != C.end()) continue;
       if(nodo->CalculateF(x.first ,x.second) < x.second->GetFValue() || std::find(A.begin(), A.end(), x.second) == A.end()) {
-        x.second->FunctionH(*this);
+        x.second->FunctionH(*this, option);
         x.second->SetGValue(nodo->getGvalue() + nodo->GetCost()[x.first]);
         x.second->SetFValue(x.second->getHvalue() + x.second->getGvalue());
         x.second->SetPrevious(nodo);
@@ -74,9 +85,15 @@ SIB Maze::BusquedaAEstrella() {
       }
     }
   }
+  sib.coste = 0;
+  sib.inspeccionados = C;
   return sib;
 }
-
+/**
+ * @brief Imprime por sálida estándar el laberinto cuando ocurre un cambio con un nodo que ha sido visitado.
+ * 
+ * @param node Nodo que ha sido visitado.
+ */
 void Maze::printMaze(Box* node) {
   if(node->getBlock() == ' ') node->SetBlockSpc();
   for(int i = 0; i < GetM(); i++) {
@@ -94,6 +111,12 @@ void Maze::printMaze(Box* node) {
   if(node != start) system("clear");
 }
 
+/**
+ * @brief Dada un lista selecciona la casilla cuyo acceso a la misma sea la de menor coste.
+ * 
+ * @param A Lista con el conjunto de nodos no visitados.
+ * @return Box* 
+ */
 Box *Maze::SelectLessCost(std::list<Box *> A) {
   std::map<double, Box *> boxes_to_calc_f;
   double cost = A.front()->GetFValue();
@@ -107,3 +130,35 @@ Box *Maze::SelectLessCost(std::list<Box *> A) {
   }
   return boxes_to_calc_f[cost];
 }
+    /**
+     * @brief Getter del numero de filas.
+     * 
+     * @return int 
+     */
+    int Maze::GetM() {return this->_m;}
+
+    /**
+     * @brief Getter del numero de columnas
+     * 
+     * @return int 
+     */
+    int Maze::GetN() {return this->_n;}
+
+    /**
+     * @brief Devuelve la posición de la casilla de inicio.
+     * 
+     * @return std::pair<int, int> 
+     */
+    std::pair<int, int> Maze::GetPosStart() { return _pos_start; }
+    /**
+     * @brief Devuelve la posición de la casilla final.
+     * 
+     * @return std::pair<int, int> 
+     */
+    std::pair<int, int> Maze::GetPosEnd() { return _pos_end; }
+    /**
+     * @brief Devuelve la matriz bidimensional que representa el laberinto.
+     * 
+     * @return Boxes 
+     */
+    Boxes Maze::GetMaze() const {return this->maze;}

@@ -1,3 +1,14 @@
+/**
+ * @file main.cc
+ * @author Borja Medina Ramos
+ * @brief Programa principal que muestra el menú dónde se debe insertar un fichero de entrada y otro de salida.
+ * Tras ello evalua y realiza la búsqueda A* e introduce los resultados en el fichero de salida propuesto.
+ * @version 0.1
+ * @date 2023-10-20
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include "../include/Maze.hh"
 #include <fstream>
 #include <string.h>
@@ -98,6 +109,18 @@ void BusquedaEstrellaMain(std::ifstream &fichero_lectura, std::ofstream &fichero
     getchar();
     return;
   }
+  int opcion;
+  std::cout << "Selecciona la función heurística:\n";
+  std::cout << "1) Manhattan:\n";
+  std::cout << "2) Chebyshev:\n";
+  std::cout << "Opción: ";
+  std::cin >> opcion;
+  if(opcion != 1 && opcion != 2) {
+    std::cout << "Esa opción no es valida\n";
+    getchar();
+    getchar();
+    return;
+  }
   std::string s, tmp; 
   matrix matrix;
   std::getline(fichero_lectura, s);
@@ -107,13 +130,12 @@ void BusquedaEstrellaMain(std::ifstream &fichero_lectura, std::ofstream &fichero
   while(getline(fichero_lectura, s)) {
     std::stringstream ss(s);
     while(getline(ss, tmp, ' ')) {
-      matrix[iterator].push_back(atoi(tmp.c_str()));
-      
+      matrix[iterator].push_back(atoi(tmp.c_str()));     
     }
     iterator++;
   } 
   Maze maze(matrix, matrix.size(), matrix.at(0).size());
-  SIB sib = maze.BusquedaAEstrella();
+  SIB sib = maze.BusquedaAEstrella(opcion);
   Print2File(fichero_salida, maze, sib);
   fichero_lectura.clear();
   fichero_lectura.seekg(0);

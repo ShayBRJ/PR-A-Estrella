@@ -1,5 +1,10 @@
 #include "../include/Utils.hh"
 
+/**
+ * @brief Provoca un retrase intencionado en el programa.
+ * 
+ * @param milliseconds 
+ */
 void Utils::delay(int milliseconds)
   {
     long pause;

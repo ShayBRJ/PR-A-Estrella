@@ -1,5 +1,7 @@
 #pragma once
 #include <map>
+#include <math.h>
+#include <vector>
 #include "Maze.hh"
 
 #define UPL 0
@@ -12,10 +14,11 @@
 #define DOWNR 7
 
 class Maze;
+
 class Box
 {
   public:
-    double FunctionH(Maze);
+    double FunctionH(Maze, int);
     Box(int state, int pos_x, int pos_y, char block);
     int getState() const;
     bool operator<(const Box) const;
